@@ -43,9 +43,9 @@ static class AddressHandler
 
         return TypedResults.Ok(GetResponse($"Records added", totalRecordsAdded));
     }
-    private static ExternalResponse GetResponse(string message, int recordsAdded = 0)
+    private static AddAddressExternalResponse GetResponse(string message, int recordsAdded = 0)
     {
-        return new ExternalResponse(message, recordsAdded);
+        return new AddAddressExternalResponse(message, recordsAdded);
     }
     private static RequestEvent GetRequestEvent(ZillowResponse zillowResponse, string groupHash)
     {
@@ -62,7 +62,7 @@ static class AddressHandler
             HousingDetails = zillowResponse.ZillowResults
         };
     }
-    private static async Task<InternalResponse> AddRequestResultsToDatabaseAsync(ZillowResponse zillowResponse, HousingDb db, string groupHash)
+    private static async Task<AddAddressInternalResponse> AddRequestResultsToDatabaseAsync(ZillowResponse zillowResponse, HousingDb db, string groupHash)
     {
         var requestEvent = GetRequestEvent(zillowResponse, groupHash);
         var numRecords = zillowResponse.ZillowResults?.Count ?? 0;

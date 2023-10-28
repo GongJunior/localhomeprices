@@ -1,20 +1,34 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 static class HousingEstimate
 {
     private static readonly Serilog.ILogger _logger = Log.ForContext(typeof(HousingEstimate));
-    public static async Task<IResult> GetMedianHomeValueAsync(int numBeds, int numBaths, double lotSize)
+    public static async Task<IResult> GetMedianHomeValueAsync(int numBeds, int numBaths, double lotSize, HousingDb db)
     {
+        // validate inputs
         try
         {
-            var zillowService = new ZillowService();
-            var medianHomeValue = await zillowService.GetMedianHomeValue(numBeds, numBaths, lotSize);
-            return Results.Ok(medianHomeValue);
+            // to get median:
+                // get collection of values
+                // remove nulls
+                // order by value
+                // if odd, get middle value
+                // if even get middle values and average them
+                // as much work as possible should be done in the database
+            var medianHomeValue = await db.HousingDetails
+                .Where(h => h.Bedrooms == numBeds 
+                && h.Bathrooms == numBaths
+                && h.LotAreaUnit == "acres"
+                && h.LotAreaValue > lotSize)
+                .Select(h => h.Zestimate)
+                .AverageAsync();
+            return TypedResults.Ok(medianHomeValue);
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Error getting median home value");
-            return Results.Error(ex.Message);
+            return TypedResults.BadRequest("Error getting median home value");
         }
     }
     
