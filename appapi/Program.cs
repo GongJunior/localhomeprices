@@ -22,7 +22,7 @@ try
     var app = builder.Build();
 
     app.MapPost("/addaddresses", AddressHandler.AddNewAddresses);
-    app.MapGet("/getmedianhomeval/{numbeds}/{numbaths}/{lotsize}", HousingEstimate.GetMedianHomeValueAsync);
+    app.MapGet("/getmedianhomeval/{numbeds}/{numbaths}/{lotsize}", HousingEstimate.GetAverageHomeValueAsync);
 
     app.Run();
 

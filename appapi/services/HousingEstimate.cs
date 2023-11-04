@@ -4,7 +4,7 @@ using Serilog;
 static class HousingEstimate
 {
     private static readonly Serilog.ILogger _logger = Log.ForContext(typeof(HousingEstimate));
-    public static async Task<IResult> GetMedianHomeValueAsync(int numBeds, int numBaths, double lotSize, HousingDb db)
+    public static async Task<IResult> GetAverageHomeValueAsync(int numBeds, int numBaths, double lotSize, HousingDb db)
     {
         // validate inputs
         try
@@ -16,14 +16,15 @@ static class HousingEstimate
                 // if odd, get middle value
                 // if even get middle values and average them
                 // as much work as possible should be done in the database
-            var medianHomeValue = await db.HousingDetails
+            var averageHomeValue = await db.HousingDetails
                 .Where(h => h.Bedrooms == numBeds 
                 && h.Bathrooms == numBaths
                 && h.LotAreaUnit == "acres"
-                && h.LotAreaValue > lotSize)
+                && h.LotAreaValue > lotSize
+                && h.Zestimate != null)
                 .Select(h => h.Zestimate)
                 .AverageAsync();
-            return TypedResults.Ok(medianHomeValue);
+            return TypedResults.Ok(averageHomeValue);
         }
         catch (Exception ex)
         {
