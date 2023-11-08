@@ -1,4 +1,4 @@
-import argparse, json
+import json
 
 def loadConfig():
     from pathlib import Path
@@ -14,4 +14,4 @@ if __name__ == '__main__':
 
     parser = pc.getParser()
     args = parser.parse_args()
-    print(args)
+    args.func(args)
