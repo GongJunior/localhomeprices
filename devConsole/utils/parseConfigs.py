@@ -1,43 +1,55 @@
 import argparse
-from dataclasses import dataclass
 from .db import getSchema
+from typing import Any, Callable
 
-@dataclass
-class RootNameSpace:
-    command: str
+class CallableNamespace(argparse.Namespace):
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+    def func() -> None:
+        pass
 
-@dataclass
-class DbNamespace:
-    command: str
-    show_schema: bool = False
+class RootNamespace(argparse.Namespace):
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.command: str
 
-@dataclass
-class ApiNamespace:
-    command: str
-    test_add_address: bool
+class DbNamespace(argparse.Namespace):
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.command: str
+        self.get_schema: Callable
+
+class ApiNamespace(argparse.Namespace):
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.command: str
+        self.test_add_address: Callable
+        self.test_get_estimate: Callable
 
 def getParser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog='Dev Console',description='Console for project')
     parser.set_defaults(func=_handle_default_case)
-    # parser.add_argument('command', choices=['db', 'api'],help='commands')
-    # parser.add_argument('--show-schema', dest='schema',action='store_const', const=getSchema, help='show db schema')
 
     subparsers = parser.add_subparsers(dest='command')
     parser_db = subparsers.add_parser('db')
-    parser_db.add_argument('--show-schema', action='store_true')
+    parser_db.add_argument('--show-schema', dest='get_schema',action='store_const', const=getSchema, help='show db schema')
     parser_db.set_defaults(func=_handle_db_command)
 
     parser_api = subparsers.add_parser('api')
-    parser_api.add_argument('--test-add-address', action='store_true')
+    parser_api.add_argument('--test-post-addaddress', action='store_true')
+    parser_api.add_argument('--test-get-valestimate', action='store_true')
     parser_api.set_defaults(func=_handle_api_command)
 
     return parser
 
-def _handle_default_case(args: RootNameSpace) -> None:
-    print(args)
+def _handle_default_case(args: RootNamespace) -> None:
+    vars(args)
 
 def _handle_db_command(args: DbNamespace) -> None:
-    print(args)
+    if args.get_schema:
+        args.get_schema()
+        return
+    print(vars(args))
 
 def _handle_api_command(args: ApiNamespace) -> None:
     print(args)

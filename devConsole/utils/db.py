@@ -1,4 +1,5 @@
-import sqlite3, utils
+import sqlite3
+import utils
 
 def getSchema():
     cnn = sqlite3.connect(utils.config['db'])

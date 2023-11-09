@@ -13,5 +13,5 @@ if __name__ == '__main__':
     import utils.parseConfigs as pc
 
     parser = pc.getParser()
-    args = parser.parse_args()
+    args: pc.CallableNamespace = parser.parse_args()
     args.func(args)
