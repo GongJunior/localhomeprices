@@ -2,7 +2,7 @@ import utils
 import requests
 
 def add_addresses():
-    pass
+    print('adding address')
 
 def get_estimates():
-    pass
+    print('getting estimate')
