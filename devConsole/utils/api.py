@@ -1,8 +1,18 @@
 import utils
 import requests
 
-def add_addresses():
-    print('adding address')
+base_url = utils.config['api']['url']['http']
+
+def add_addresses() -> None:
+    endpoint = 'addaddresses'
+    url = f'{base_url}/{endpoint}'
+    json_body = utils.config['api']['samplepayloads']['valid']
+
+    response = requests.post(url=url, json=json_body)
+    json_response = response.json()
+    print(json_response)
+
 
 def get_estimates():
-    print('getting estimate')
+    endpoint = 'getestimate'
+    url = f'{base_url}/{endpoint}'
