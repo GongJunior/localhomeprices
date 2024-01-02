@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-static class AddressHandler
+static class AddAddress
 {
-    private static readonly Serilog.ILogger _logger = Log.ForContext(typeof(AddressHandler));
+    private static readonly Serilog.ILogger _logger = Log.ForContext(typeof(AddAddress));
     public static async Task<IResult> AddNewAddresses(SearchParam param, ZillowService zillow, HousingDb db, IConfiguration config)
     {
         var groupHash = new Guid().ToString();

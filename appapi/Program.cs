@@ -21,8 +21,8 @@ try
     builder.Services.AddHttpClient<ZillowService>();
     var app = builder.Build();
 
-    app.MapPost("/addaddresses", AddressHandler.AddNewAddresses);
-    app.MapGet("/getestimate/{zip}/{numbeds}/{numbaths}/{lotsize}", HousingEstimate.GetAverageHomeValueAsync);
+    app.MapPost("/addaddresses", AddAddress.AddNewAddresses);
+    app.MapGet("/getestimate/{zip}/{numbeds}/{numbaths}/{lotsize}", GetEstimate.GetAverageHomeValueAsync);
 
     app.Run();
 
