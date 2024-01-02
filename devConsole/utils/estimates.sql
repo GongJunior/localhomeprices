@@ -1,6 +1,6 @@
 -- SQLite
 SELECT 
-    hd.Zestimate
+    hd.Zestimate, LotAreaUnit, LotAreaValue
 FROM 
     requestEvents re
 INNER JOIN HousingDetails hd on hd.RequestEventId = re.RequestEventId
@@ -9,4 +9,9 @@ WHERE
     AND
     hd.Zestimate is not null
     AND
-    hd.Bedrooms = 3;
+    hd.Bedrooms = 999 
+    AND
+    hd.Bathrooms = 999 
+    AND
+    hd.ZipCode = '12345'
+order by LotAreaValue;

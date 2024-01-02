@@ -13,6 +13,7 @@ appsettings.json
 appsettings.*.json
 sample.json
 housing.db
+housing.db-*
 *.csv
 .venv
 
