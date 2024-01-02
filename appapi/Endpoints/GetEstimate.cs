@@ -16,9 +16,8 @@ static class GetEstimate
                         hd => hd.ZipCode == zip.ToString()
                         && hd.Bedrooms == numBeds
                         && hd.Bathrooms == numBaths
-                        // && hd.LotAreaUnit == "acres"
-                        // && hd.LotAreaValue >= (lotSize - lotSize * .5)
-                        // && hd.LotAreaValue <= (lotSize + lotSize * .5)
+                        && hd.LotAreaUnit == "acres"
+                        && hd.LotAreaValue <= (lotSize + lotSize * 1.5)
                         && hd.Zestimate != null
                     )
                 );
