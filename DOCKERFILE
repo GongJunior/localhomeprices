@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
+WORKDIR /source
+
+#copy csproj and restore as distinct layers
+COPY ./appapi/*.sln ./appapi/
+COPY ./appapi/*.csproj ./appapi/
+RUN dotnet restore ./appapi/appapi.csproj
+
+#copy everything else and build app
+COPY ./appapi/. ./appapi/
+WORKDIR /source/appapi
+RUN dotnet publish ./appapi.csproj -o /app --no-restore
+
+#final stage/image
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT [ "./appapi" ]
