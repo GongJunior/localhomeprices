@@ -17,7 +17,7 @@ static class AddAddress
         if (hasCallsRemainig == false)
             return TypedResults.BadRequest(GetResponse("Max monthly requests reached!"));
 
-        var initialResponse = await AddRequestResultsToDatabaseAsync(await zillow.GetSampleHousingDataAsync(), db, groupHash);
+        var initialResponse = await AddRequestResultsToDatabaseAsync(await zillow.GetHousingDataAsync(), db, groupHash);
         numCallsRemaing--;
         _logger.Information("Initial Response: {@Response}", initialResponse);
 
@@ -33,7 +33,7 @@ static class AddAddress
             _logger.Information("Processing page: {@Page}", i);
             if (numCallsRemaing == 0)
                 break;
-            var pagedResponse = await AddRequestResultsToDatabaseAsync(await zillow.GetSamplePagedData(i), db, groupHash);
+            var pagedResponse = await AddRequestResultsToDatabaseAsync(await zillow.GetHousingDataAsync(i), db, groupHash);
             numCallsRemaing--;
             if (pagedResponse.RecordsAdded == 0)
                 return TypedResults.Ok(GetResponse($"Total pages processed: {i + 1}", totalRecordsAdded));
